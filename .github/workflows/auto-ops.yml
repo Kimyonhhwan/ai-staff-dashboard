@@ -2,8 +2,11 @@ name: AI 수익노트 자동 운영
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # 30분마다
-  workflow_dispatch:  # 수동 실행도 가능
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+env:
+  DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
 
 jobs:
   auto-ops:
@@ -16,6 +19,16 @@ jobs:
         with:
           python-version: '3.11'
       
+      - name: Install dependencies
+        run: |
+          pip install edge-tts pillow
+      
       - name: Run auto operations
         run: |
           python auto_ops.py
+      
+      - name: Upload generated videos
+        uses: actions/upload-artifact@v4
+        with:
+          name: videos
+          path: videos/*.mp4
