@@ -1,0 +1,21 @@
+name: AI 수익노트 자동 운영
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # 30분마다
+  workflow_dispatch:  # 수동 실행도 가능
+
+jobs:
+  auto-ops:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Run auto operations
+        run: |
+          python auto_ops.py
